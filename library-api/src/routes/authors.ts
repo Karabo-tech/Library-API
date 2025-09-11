@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { authors } from '../data';
+import { authors, books } from '../data';
 import { Author } from '../models/author';
 import { v4 as uuidv4 } from 'uuid';
 import { NotFoundError } from '../errors/customError';
@@ -43,6 +43,13 @@ router.delete('/:id', (req: Request, res: Response) => {
   if (index === -1) throw new NotFoundError('Author not found');
   authors.splice(index, 1);
   res.status(204).send();
+});
+
+router.get('/:id/books', (req: Request, res: Response) => {
+  const author = authors.find(a => a.id === req.params.id);
+  if (!author) throw new NotFoundError('Author not found');
+  const authorBooks = books.filter(b => b.authorId === req.params.id);
+  res.json(authorBooks);
 });
 
 export default router;
