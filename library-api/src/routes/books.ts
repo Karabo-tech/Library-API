@@ -46,4 +46,50 @@ router.delete('/:id', (req: Request, res: Response) => {
   res.status(204).send();
 });
 
+router.get('/', (req: Request, res: Response) => {
+  let result = [...books];
+
+  // Filter by author
+  if (req.query.authorId) {
+    result = result.filter(b => b.authorId === req.query.authorId);
+  }
+
+  // Search by title
+  if (req.query.title) {
+    const title = req.query.title as string;
+    result = result.filter(b => b.title.toLowerCase().includes(title.toLowerCase()));
+  }
+
+  // Filter by year
+  if (req.query.year) {
+    const year = parseInt(req.query.year as string);
+    result = result.filter(b => b.publicationYear === year);
+  }
+
+  // Sort by title or year
+  if (req.query.sortBy) {
+    const sortBy = req.query.sortBy as string;
+    result.sort((a, b) => {
+      if (sortBy === 'title') return a.title.localeCompare(b.title);
+      if (sortBy === 'year') return a.publicationYear - b.publicationYear;
+      return 0;
+    });
+  }
+
+  // Pagination
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const paginatedResult = result.slice(startIndex, endIndex);
+
+  res.json({
+    page,
+    limit,
+    total: result.length,
+    books: paginatedResult
+  });
+});
+
 export default router;
