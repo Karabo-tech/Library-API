@@ -3,11 +3,12 @@ import { authors } from '../data';
 import { Author } from '../models/author';
 import { v4 as uuidv4 } from 'uuid';
 import { NotFoundError } from '../errors/customError';
+import { validateAuthor } from '../middleware/validate';
 
 const router = express.Router();
 
 // Create Author
-router.post('/', (req: Request, res: Response) => {
+router.post('/', validateAuthor,  (req: Request, res: Response) => {
   const { name, birthYear } = req.body;
   const author: Author = { id: uuidv4(), name, birthYear };
   authors.push(author);
@@ -27,7 +28,7 @@ router.get('/:id', (req: Request, res: Response) => {
 });
 
 // Update Author
-router.put('/:id', (req: Request, res: Response) => {
+router.put('/:id', validateAuthor,  (req: Request, res: Response) => {
   const author = authors.find(a => a.id === req.params.id);
   if (!author) throw new NotFoundError('Author not found');
   const { name, birthYear } = req.body;
