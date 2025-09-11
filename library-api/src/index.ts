@@ -2,6 +2,7 @@ import express from 'express';
 import { logger } from './middleware/logger';
 import authorRoutes from './routes/authors';
 import { errorHandler } from './errors/customError';
+import bookRoutes from './routes/books';
 
 const app = express();
 app.use(express.json());
@@ -10,6 +11,8 @@ app.use(logger);
 app.use('/authors', authorRoutes);
 
 app.use(errorHandler);
+
+app.use('/books', bookRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
