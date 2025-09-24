@@ -99,7 +99,7 @@ Use Postman to test endpoints. Ensure valid JSON payloads and correct author IDs
 
 ## Final Notes
 
-- The API uses an in-memory array for simplicity, as no database is specified. For production, consider using a database like MongoDB or PostgreSQL.
+- The API uses an in-memory array for simplicity, as no database is specified.
 - The validation middleware ensures books reference valid authors and prevents duplicate books (same title and author).
 - Query parameters support filtering, searching, sorting, and pagination as requested.
 - Error handling is centralized with appropriate status codes.
