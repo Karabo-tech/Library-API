@@ -7,7 +7,7 @@ A RESTful API for managing a library system with authors and books, built with T
 
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/Karabo-tech/Library-API
    cd library-api
 
 2. Install dependencies
